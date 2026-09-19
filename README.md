@@ -9,12 +9,12 @@ Cloudflare Tunnel.
 
 ## Estado
 
-**Fase 1 completada** — esqueleto funcional con datos de ejemplo.
+**Fase 2 completada** — persistencia en SQLite y registro de escaneos.
 
 | Fase | Contenido | Estado |
 |---|---|---|
 | 1 | Esqueleto: landing, formulario, informe con datos mock, blog, legales, SEO | ✅ Hecho |
-| 2 | Persistencia real (SQLite), caché en disco, registro de escaneos | Pendiente |
+| 2 | Persistencia real (SQLite), caché en disco, registro de escaneos, endpoint stats | ✅ Hecho |
 | 3 | Checks reales pasivos (TLS, cabeceras, DNS, RDAP, crt.sh, DNSBL, reputación) | Pendiente |
 | 4 | Nivel 2: verificación de propiedad por TXT + escaneo activo autorizado + CVE | Pendiente |
 | 5 | AdSense en producción y ajuste fino de Core Web Vitals | Pendiente |
