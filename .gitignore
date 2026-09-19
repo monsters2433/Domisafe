@@ -1,0 +1,32 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Entorno y secretos — NUNCA se suben al repo
+.env
+.env.*
+!.env.example
+
+# Base de datos local / caché
+data/
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+.pm2/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.pem
+*.key
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

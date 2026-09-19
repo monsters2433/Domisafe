@@ -1,0 +1,26 @@
+{
+  "apps": [
+    {
+      "name": "domisafe",
+      "cwd": "/home/domisafe/app",
+      "script": ".next/standalone/server.js",
+      "instances": 1,
+      "exec_mode": "fork",
+      "max_memory_restart": "400M",
+      "node_args": "--max-old-space-size=384",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "3000",
+        "HOSTNAME": "127.0.0.1"
+      },
+      "error_file": "/home/domisafe/logs/domisafe-error.log",
+      "out_file": "/home/domisafe/logs/domisafe-out.log",
+      "merge_logs": true,
+      "time": true,
+      "autorestart": true,
+      "max_restarts": 10,
+      "min_uptime": "30s",
+      "kill_timeout": 10000
+    }
+  ]
+}
