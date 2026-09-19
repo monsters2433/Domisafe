@@ -8,12 +8,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "cp -r public .next/standalone/ 2>/dev/null || true && cp -r .next/static .next/standalone/.next/ 2>/dev/null || true",
-    "start": "next start -p ${PORT:-3000}",
+    "postbuild": "node scripts/init-db.js && cp -r public .next/standalone/ 2>/dev/null || true && cp -r .next/static .next/standalone/.next/ 2>/dev/null || true",
+    "start": "node scripts/init-db.js && next start -p ${PORT:-3000}",
     "typecheck": "tsc --noEmit",
     "lint": "next lint"
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "next": "^15.5.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"

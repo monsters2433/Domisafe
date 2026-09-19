@@ -5,6 +5,7 @@ import { buildMockReport } from '@/lib/mock';
 import { checkRateLimit, clientIp } from '@/lib/rate-limit';
 import { getReport, saveReport } from '@/lib/store';
 import { verifyTurnstile } from '@/lib/turnstile';
+import { logScan } from '@/lib/db';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,6 +22,7 @@ export const dynamic = 'force-dynamic';
  */
 export async function POST(request: Request) {
   const ip = clientIp(request.headers);
+  const userAgent = request.headers.get('user-agent') || undefined;
 
   const limit = checkRateLimit(ip);
   if (!limit.allowed) {
@@ -39,11 +41,25 @@ export async function POST(request: Request) {
 
   const parsed = parseDomain(payload.domain ?? '');
   if (!parsed.ok) {
+    logScan({
+      domain: payload.domain ?? 'unknown',
+      ipAddress: ip,
+      userAgent,
+      status: 'invalid_domain',
+      scannedAt: Date.now(),
+    });
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
   const turnstile = await verifyTurnstile(payload.turnstileToken, ip);
   if (!turnstile.ok) {
+    logScan({
+      domain: parsed.domain,
+      ipAddress: ip,
+      userAgent,
+      status: 'error',
+      scannedAt: Date.now(),
+    });
     return NextResponse.json({ error: turnstile.error }, { status: turnstile.status });
   }
 
@@ -52,8 +68,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ report: cached });
   }
 
+  const startTime = Date.now();
   const report = buildMockReport(parsed.domain);
   saveReport(report);
+  const durationMs = Date.now() - startTime;
+
+  // Log con duración (saveReport ya hace log de success internamente)
+  logScan({
+    domain: parsed.domain,
+    ipAddress: ip,
+    userAgent,
+    status: 'success',
+    durationMs,
+    scannedAt: Date.now(),
+  });
 
   return NextResponse.json({ report });
 }
