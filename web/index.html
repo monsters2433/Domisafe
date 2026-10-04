@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Domisafe PDF</title>
+  <meta name="theme-color" content="#0b5fff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Domisafe PDF">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-180.png">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <style>
+    :root { --bg:#f4f6fb; --card:#fff; --fg:#14181f; --muted:#667085; --accent:#0b5fff; --line:#d8dde7; --ok:#067647; --err:#b42318; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0e1116; --card:#181c24; --fg:#eef1f6; --muted:#9aa4b5; --accent:#4b8bff; --line:#2b3140; --ok:#47cd89; --err:#f97066; }
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.4 -apple-system, system-ui, sans-serif;
+           padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); }
+    main { max-width: 480px; margin: 0 auto; }
+    h1 { font-size: 24px; margin: 8px 0 4px; }
+    p.sub { margin: 0 0 20px; color: var(--muted); font-size: 15px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+    label, .paso { display:block; font-weight:600; margin-bottom: 8px; }
+    .btn { width:100%; min-height:48px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--fg);
+           font: inherit; font-weight:600; cursor:pointer; }
+    .btn.primario { background: var(--accent); border-color: var(--accent); color:#fff; }
+    .btn:disabled { opacity:.5; cursor: default; }
+    .fila { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    input[type=password], input[type=text] { width:100%; min-height:48px; padding:0 12px; font-size:17px; border-radius:12px;
+           border:1px solid var(--line); background:var(--bg); color:var(--fg); text-transform: uppercase; }
+    input[type=file] { display:none; }
+    #archivo { margin: 8px 0 0; color: var(--muted); font-size: 14px; word-break: break-all; }
+    #estado { min-height: 24px; font-weight: 600; }
+    #estado.ok { color: var(--ok); } #estado.error { color: var(--err); }
+    footer { color: var(--muted); font-size: 13px; text-align:center; margin-top: 18px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Domisafe PDF</h1>
+  <p class="sub">Bloquea un PDF con el NIF/CIF del cliente. El archivo no sale de tu dispositivo.</p>
+
+  <section class="card">
+    <span class="paso">1. Elige el PDF</span>
+    <input id="pdf" type="file" accept="application/pdf,.pdf">
+    <button class="btn" id="elegir" type="button">Seleccionar PDF…</button>
+    <p id="archivo">Ningún PDF seleccionado</p>
+  </section>
+
+  <section class="card">
+    <label for="nif">2. NIF / CIF del cliente</label>
+    <form onsubmit="return false">
+    <input id="nif" type="password" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="done">
+    </form>
+  </section>
+
+  <section class="card">
+    <div class="fila">
+      <button class="btn primario" id="bloquear" type="button">Bloquear</button>
+      <button class="btn" id="desbloquear" type="button">Desbloquear</button>
+    </div>
+    <p id="estado" role="status"></p>
+    <button class="btn primario" id="guardar" type="button" hidden>Guardar / Compartir</button>
+  </section>
+
+  <footer>Cifrado AES-256 · funciona sin conexión una vez cargada</footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
